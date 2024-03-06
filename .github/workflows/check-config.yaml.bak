@@ -1,15 +1,16 @@
 name: Check Config File
+
 on:
   push:
     branches:
-      - master
-      - main
+      - main # adjust the branch as needed
+
 jobs:
   check-config:
-    name: Check Config File
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Check if config.yaml exists
@@ -23,5 +24,9 @@ jobs:
         run: |
           if ! grep -q 'address:' config.yaml; then
             echo "Error: 'address' key is missing in config.yaml"
+            exit 1
+          fi
+          if ! grep -q 'person.cellphone:' config.yaml; then
+            echo "Error: 'person.cellphone' key is missing in config.yaml"
             exit 1
           fi
